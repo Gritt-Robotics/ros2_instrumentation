@@ -1,4 +1,4 @@
 [submodule "third_party/ros2_tracing"]
 	path = third_party/ros2_tracing
-	url = git@github.com:Gritt-Robotics/ros2_tracing.git
+	url = https://github.com/Gritt-Robotics/ros2_tracing.git
 	branch = main
