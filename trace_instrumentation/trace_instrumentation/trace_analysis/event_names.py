@@ -1,0 +1,41 @@
+# Copyright 2026 Gritt Robotics Inc.
+
+"""
+event_names.py
+===============
+
+ros2_tracing / lttng_python tracepoint names, as they appear in Event.name.
+"""
+
+EVT_RCL_INIT = "ros2:rcl_init"
+EVT_RCL_NODE_INIT = "ros2:rcl_node_init"
+EVT_RCL_PUBLISHER_INIT = "ros2:rcl_publisher_init"
+EVT_RCL_SUBSCRIPTION_INIT = "ros2:rcl_subscription_init"
+EVT_RMW_PUBLISHER_INIT = "ros2:rmw_publisher_init"
+EVT_RMW_SUBSCRIPTION_INIT = "ros2:rmw_subscription_init"
+EVT_RCLCPP_SUBSCRIPTION_INIT = "ros2:rclcpp_subscription_init"
+EVT_RCL_TIMER_INIT = "ros2:rcl_timer_init"
+EVT_RCLCPP_TIMER_LINK_NODE = "ros2:rclcpp_timer_link_node"
+EVT_RCLCPP_TIMER_CALLBACK_ADDED = "ros2:rclcpp_timer_callback_added"
+EVT_RCLCPP_SUBSCRIPTION_CALLBACK_ADDED = "ros2:rclcpp_subscription_callback_added"
+EVT_RCLCPP_SERVICE_CALLBACK_ADDED = "ros2:rclcpp_service_callback_added"
+EVT_RCLCPP_CALLBACK_REGISTER = "ros2:rclcpp_callback_register"
+EVT_RCL_SERVICE_INIT = "ros2:rcl_service_init"
+EVT_RCL_CLIENT_INIT = "ros2:rcl_client_init"
+EVT_RCL_LIFECYCLE_STATE_MACHINE_INIT = "ros2:rcl_lifecycle_state_machine_init"
+EVT_RCL_LIFECYCLE_TRANSITION = "ros2:rcl_lifecycle_transition"
+EVT_CALLBACK_START = "ros2:callback_start"
+EVT_CALLBACK_END = "ros2:callback_end"
+EVT_RCLCPP_EXECUTOR_WAIT_FOR_WORK = "ros2:rclcpp_executor_wait_for_work"
+EVT_RCLCPP_EXECUTOR_GET_NEXT_READY = "ros2:rclcpp_executor_get_next_ready"
+EVT_RCLCPP_EXECUTOR_EXECUTE = "ros2:rclcpp_executor_execute"
+EVT_RCL_PUBLISH = "ros2:rcl_publish"
+EVT_RCLCPP_INTRA_PUBLISH = "ros2:rclcpp_intra_publish"
+EVT_RMW_PUBLISH = "ros2:rmw_publish"
+EVT_RMW_TAKE = "ros2:rmw_take"
+EVT_RCLCPP_PUBLISH = "ros2:rclcpp_publish"
+EVT_RCL_TAKE = "ros2:rcl_take"
+EVT_RCLCPP_TAKE = "ros2:rclcpp_take"
+EVT_MESSAGE_LINK_TAKE = "ros2:message_link_take"
+EVT_MESSAGE_LINK_PUBLISH = "ros2:message_link_publish"
+EVT_LTTNG_PYTHON_EVENT = "lttng_python:event"

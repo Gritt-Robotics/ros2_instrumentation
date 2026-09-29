@@ -1,0 +1,156 @@
+<!doctype html>
+<!-- Copyright 2026 Gritt Robotics Inc. -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pipeline Trace Schedule</title>
+    <link rel="stylesheet" href="report.css">
+  </head>
+  <body>
+    <!--
+      The report payload: dataclasses.asdict() of reports.model.Report, injected by
+      bundle.py. Left as null in the source tree so index.html can be opened directly
+      against frontend/sample_report.json (see report.js loadReport()).
+    -->
+    <script id="trace-report" type="application/json">null</script>
+
+    <div class="sheet" id="sheet">
+      <div class="titleblock">
+        <h1 id="report-title"></h1>
+        <div class="field" id="capture-window"></div>
+        <!-- Only filled in for an A/B report; says which value in a cell is which. -->
+        <div class="field compare-key" id="compare-key" hidden></div>
+      </div>
+
+      <div class="topology" id="topology">
+        <pre class="mermaid" id="topology-diagram"></pre>
+      </div>
+
+      <section>
+        <h2>01 &middot; Topic stats</h2>
+        <div class="table-scroll">
+          <table class="sticky-header">
+            <colgroup>
+              <col style="width:14%">
+              <col style="width:14%">
+              <col style="width:14%">
+              <col style="width:6%">
+              <col style="width:6%">
+              <col style="width:10%">
+              <col style="width:9%"><col style="width:9%">
+              <col style="width:9%"><col style="width:9%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2">Source</th>
+                <th rowspan="2">Destination</th>
+                <th rowspan="2">Topic</th>
+                <th rowspan="2" class="num"
+                    data-tooltip="Number of messages published on this edge.">Pub</th>
+                <th rowspan="2" class="num"
+                    data-tooltip="Number of publishes matched to a take (delivered).">Rcv</th>
+                <th rowspan="2" class="num"
+                    data-tooltip="Published minus received on this edge, as a count and percentage.">Dropped</th>
+                <th colspan="2" class="grp"
+                    data-tooltip="Time from the callback's start to when it published on this edge.">Start&rarr;Pub (ms)</th>
+                <th colspan="2" class="grp"
+                    data-tooltip="Time from publish to take.">Topic latency (ms)</th>
+              </tr>
+              <tr>
+                <th class="grp num p50">p50</th><th class="num">p90</th>
+                <th class="grp num p50">p50</th><th class="num">p90</th>
+              </tr>
+            </thead>
+            <tbody id="topic-stats-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>02 &middot; Node analysis</h2>
+        <div class="table-scroll">
+          <table class="sticky-header">
+            <colgroup>
+              <col style="width:13%">
+              <col style="width:13%">
+              <col style="width:13%">
+              <col style="width:7%">
+              <col style="width:7%"><col style="width:7%">
+              <col style="width:7%"><col style="width:7%">
+              <col style="width:7%"><col style="width:7%">
+              <col style="width:12%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2">Node</th>
+                <th rowspan="2">Function call</th>
+                <th rowspan="2">Topic</th>
+                <th rowspan="2" class="num">Freq (hz)</th>
+                <th colspan="2" class="grp"
+                    data-tooltip="Time from callback start to callback end.">Duration (ms)</th>
+                <th colspan="2" class="grp"
+                    data-tooltip="Time between the start of each callback.">Interarrival (ms)</th>
+                <th colspan="2" class="grp"
+                    data-tooltip="Time between the end of a callback and the start of the next.">Inter-callback gap (ms)</th>
+                <!-- data-tooltip interpolates the report's own threshold; set by report.js. -->
+                <th rowspan="2" id="short-gap-header"># short callback gaps</th>
+              </tr>
+              <tr>
+                <th class="grp num p50">p50</th><th class="num">p90</th>
+                <th class="grp num p50">p50</th><th class="num">p90</th>
+                <th class="grp num p50">p50</th><th class="num">p90</th>
+              </tr>
+            </thead>
+            <tbody id="node-analysis-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>03 &middot; Chain latency</h2>
+        <div id="chain-latency-empty" hidden>
+          <p>Not provided</p>
+        </div>
+        <div id="chain-latency-content" hidden>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th rowspan="2">Topic Chain</th>
+                  <th rowspan="2" class="num">Traversals</th>
+                  <th colspan="2" class="grp"
+                      data-tooltip="Time from the publish on the chain's first step to where its terminator ends the chain: the last subscriber's callback start, or the publish onto the last topic.">Latency (ms)</th>
+                </tr>
+                <tr>
+                  <th class="grp num p50">p50</th><th class="num">p90</th>
+                </tr>
+              </thead>
+              <tbody id="chain-summary-rows"></tbody>
+            </table>
+          </div>
+          <!-- One steps table per chain; the row count varies with the chain. -->
+          <div id="chain-steps-tables" class="chain-steps"></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>04 &middot; Throughput over time</h2>
+        <div id="throughput-empty" hidden>
+          <p>Not provided</p>
+        </div>
+        <div id="throughput-content" hidden>
+          <div class="chart-caption" id="throughput-caption" hidden></div>
+          <div id="throughput-chart"></div>
+          <!-- B's own chart, below A's rather than overlaid; both share a y-axis. -->
+          <div id="throughput-compare" hidden>
+            <div class="chart-caption" id="throughput-compare-caption"></div>
+            <div id="throughput-compare-chart"></div>
+          </div>
+          <div class="chart-legend" id="throughput-legend"></div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="report.js"></script>
+  </body>
+</html>

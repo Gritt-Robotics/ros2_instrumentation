@@ -1,0 +1,437 @@
+/* Copyright 2026 Gritt Robotics Inc. */
+
+/*
+ * The "blueprint / cyanotype" visual system: theme tokens (dark cyanotype default,
+ * light whiteprint override, following the viewer's prefers-color-scheme and an
+ * explicit data-theme toggle in both directions) plus the table and chart styles.
+ * Inlined into the generated report by bundle.py; loaded as a plain stylesheet when
+ * index.html is opened directly.
+ */
+
+:root {
+  --bg: #0d2b4d;
+  --surface: #123a63;
+  --surface-2: #17436e;
+  --border: #2c5788;
+  --text: #e8f1fb;
+  --text-dim: #9cbcdd;
+  --text-faint: #6f93bc;
+  --accent: #e0913f;
+  --good: #4caf6a;
+  --warn: #e0b23f;
+  --critical: #e05a4f;
+  --s1: #4fd1e0;
+  --s2: #d14fe0;
+  --s3: #e0d14f;
+  --s4: #4fe08a;
+  --s5: #4f8ee0;
+  --s6: #8f4fe0;
+  --s7: #e04f9e;
+  --s8: #a3e04f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d2b4d;
+    --surface: #123a63;
+    --surface-2: #17436e;
+    --border: #2c5788;
+    --text: #e8f1fb;
+    --text-dim: #9cbcdd;
+    --text-faint: #6f93bc;
+    --accent: #e0913f;
+    --good: #4caf6a;
+    --warn: #e0b23f;
+    --critical: #e05a4f;
+    --s1: #4fd1e0;
+    --s2: #d14fe0;
+    --s3: #e0d14f;
+    --s4: #4fe08a;
+    --s5: #4f8ee0;
+    --s6: #8f4fe0;
+    --s7: #e04f9e;
+    --s8: #a3e04f;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f4ec;
+    --surface: #ffffff;
+    --surface-2: #efe9d8;
+    --border: #c7d0d6;
+    --text: #1c2733;
+    --text-dim: #55606b;
+    --text-faint: #7c8792;
+    --accent: #b5652a;
+    --good: #2e7d46;
+    --warn: #a67b1f;
+    --critical: #a63a2f;
+    --s1: #1f8f9c;
+    --s2: #9c1f8f;
+    --s3: #9c8f1f;
+    --s4: #1f9c55;
+    --s5: #1f5e9c;
+    --s6: #5e1f9c;
+    --s7: #9c1f6e;
+    --s8: #6e9c1f;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0d2b4d;
+  --surface: #123a63;
+  --surface-2: #17436e;
+  --border: #2c5788;
+  --text: #e8f1fb;
+  --text-dim: #9cbcdd;
+  --text-faint: #6f93bc;
+  --accent: #e0913f;
+  --good: #4caf6a;
+  --warn: #e0b23f;
+  --critical: #e05a4f;
+  --s1: #4fd1e0;
+  --s2: #d14fe0;
+  --s3: #e0d14f;
+  --s4: #4fe08a;
+  --s5: #4f8ee0;
+  --s6: #8f4fe0;
+  --s7: #e04f9e;
+  --s8: #a3e04f;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f4ec;
+  --surface: #ffffff;
+  --surface-2: #efe9d8;
+  --border: #c7d0d6;
+  --text: #1c2733;
+  --text-dim: #55606b;
+  --text-faint: #7c8792;
+  --accent: #b5652a;
+  --good: #2e7d46;
+  --warn: #a67b1f;
+  --critical: #a63a2f;
+  --s1: #1f8f9c;
+  --s2: #9c1f8f;
+  --s3: #9c8f1f;
+  --s4: #1f9c55;
+  --s5: #1f5e9c;
+  --s6: #5e1f9c;
+  --s7: #9c1f6e;
+  --s8: #6e9c1f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+.sheet {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.titleblock, .topology, section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.titleblock h1, section h2 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  margin: 0 0 8px 0;
+}
+
+.topology {
+  overflow-x: auto;
+}
+
+.topology .node-box {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.topology .arrow-label {
+  color: var(--text-faint);
+  font-size: 0.85em;
+}
+
+/* Mermaid renders the flowchart as inline SVG after page load; report.js assigns each
+   edge its own base-to-tip gradient once the diagram's real paths exist to measure, so
+   only thickness is set here -- a static color/gradient rule here would just be
+   overridden per-edge by that script anyway. This selector must match
+   TOPOLOGY_EDGE_SELECTOR in report.js. */
+.topology svg .edgePath .path,
+.topology svg .flowchart-link {
+  stroke-width: 4px !important;
+}
+
+/* --topology-edge-tip is set inline per-report; the name must match
+   TOPOLOGY_EDGE_TIP_CSS_VAR in report.js. */
+.topology svg marker path {
+  stroke: var(--topology-edge-tip) !important;
+  fill: var(--topology-edge-tip) !important;
+}
+
+.table-scroll {
+  overflow: auto;
+  max-height: 420px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-family: "JetBrains Mono", "Menlo", monospace;
+}
+
+th, td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+th.grp, td.grp {
+  border-left: 2px solid var(--border);
+}
+
+td.num, th.num {
+  text-align: right;
+}
+
+/* Column widths for 01/02 come from each table's <colgroup> (report.js); fixed layout
+   makes those widths authoritative instead of shrinking to content. Font-size is
+   smaller than the sheet's default so a row fits more before wrapping. */
+table.sticky-header {
+  table-layout: fixed;
+  font-size: 0.9em;
+}
+
+table.sticky-header td {
+  overflow-wrap: anywhere;
+}
+
+/* Smaller than the table's base size so numeric values fit 01/02's fixed
+   colgroup widths without wrapping. */
+table.sticky-header td.num {
+  font-size: 0.85em;
+}
+
+td.p50 {
+  font-weight: 700;
+}
+
+th[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+table.sticky-header thead th {
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
+table.sticky-header thead tr:first-child th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+}
+
+table.sticky-header thead tr:nth-child(2) th {
+  position: sticky;
+  top: var(--sticky-header-row1-h, 34px);
+  z-index: 2;
+  background: var(--surface);
+}
+
+th[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 10;
+  padding: 6px 10px;
+  max-width: 260px;
+  white-space: normal;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 400;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* The node line under a chain endpoint or a chain path's topic (report.js's
+   CSS_CLASS_ENDPOINT_NODE / CSS_CLASS_CHAIN_TOPIC_NODES). */
+.endpoint-node, .chain-topic-nodes {
+  color: var(--text-faint);
+  font-size: 0.85em;
+}
+
+.chain-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2px 8px;
+}
+
+.chain-topic {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Resets weight so the node line stays subordinate inside the bold steps heading. */
+.chain-topic-nodes {
+  font-weight: 400;
+}
+
+/* Sets the per-chain steps tables apart from the summary table above them, and each
+   chain's block from the one before it. */
+.chain-steps,
+.chain-block + .chain-block {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* The B-trace value in an A/B report (report.js's CSS_CLASS_COMPARE_B). Dimmed but
+   left at full size, since the two numbers exist to be read against each other. */
+.compare-b {
+  color: var(--text-dim);
+}
+
+/* Stacked under A in sections 01/02; set beside it in 03, where there is room. */
+span.compare-b {
+  margin-left: 10px;
+}
+
+.compare-key {
+  color: var(--text-dim);
+}
+
+/* Rows are twice as tall once each cell carries both traces, so the same scroll box
+   would show half as many of them. */
+.comparing .table-scroll {
+  max-height: 720px;
+}
+
+.chart-caption {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  margin-bottom: 4px;
+}
+
+.sev-good { color: var(--good); }
+.sev-warn { color: var(--warn); }
+.sev-critical { color: var(--critical); }
+
+/* B's value when compare.py's significance test flagged it (report.js's
+   CSS_CLASS_SIGNIFICANT). Undimmed and bold so it stands out against the ordinary
+   .compare-b dimming and isn't read by color alone. */
+.compare-b.significant {
+  color: var(--warn);
+  font-weight: 700;
+}
+
+/* Which way the flagged shift went, for the metrics where a direction means
+   something; the neutral tint above stands for the ones where it does not. */
+.compare-b.significant.improvement {
+  color: var(--good);
+}
+
+.compare-b.significant.regression {
+  color: var(--critical);
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  min-width: 560px;
+}
+
+.series-topic {
+  stroke-width: 1.25;
+}
+
+.series-topic:nth-of-type(1) { stroke: var(--s1); }
+.series-topic:nth-of-type(2) { stroke: var(--s2); }
+.series-topic:nth-of-type(3) { stroke: var(--s3); }
+.series-topic:nth-of-type(4) { stroke: var(--s4); }
+.series-topic:nth-of-type(5) { stroke: var(--s5); }
+.series-topic:nth-of-type(6) { stroke: var(--s6); }
+.series-topic:nth-of-type(7) { stroke: var(--s7); }
+.series-topic:nth-of-type(8) { stroke: var(--s8); }
+
+.chart-axis-line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart-gridline {
+  stroke: var(--border);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.chart-axis-label {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-family: "JetBrains Mono", "Menlo", monospace;
+}
+
+/* Names the quantity on each axis; set apart from the tick labels by weight, since
+   both sit in the same margin. */
+.chart-axis-title {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "Menlo", monospace;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 8px;
+  font-size: 0.85em;
+  color: var(--text-dim);
+}
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+a:focus, button:focus, [tabindex]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
